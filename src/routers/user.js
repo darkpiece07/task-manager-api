@@ -5,14 +5,13 @@ const auth = require('../middleware/auth')
 const User = require('../models/user')
 const multer = require('multer')
 const { application } = require('express')
-const { sendWelcomeEmail, sendCancellationEmail} = require('../emails/account')
 
 router.post('/users', async (req, res) => {
     const user = new User(req.body)
 
     try{
         await user.save()
-        sendWelcomeEmail(user.email, user.name)
+        //sendWelcomeEmail(user.email, user.name)
         const token = await user.generateAuthToken()
         res.status(201).send({user, token}) 
     } catch(e) {
@@ -43,15 +42,15 @@ router.post('/users/logout', auth, async (req, res) => {
     }
 })
 
-router.post('/users/logoutAll', auth, async(req, res) => {
-    try{
-        req.user.tokens = []
-        await req.user.save()
-        res.send()
-    } catch(e) {
-        res.status(500).send()
-    }
-})
+// router.post('/users/logoutAll', auth, async(req, res) => {
+//     try{
+//         req.user.tokens = []
+//         await req.user.save()
+//         res.send()
+//     } catch(e) {
+//         res.status(500).send()
+//     }
+// })
 
 router.get('/users/me', auth, async (req,res) => {
     res.send(req.user)

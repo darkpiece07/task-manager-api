@@ -1,4 +1,7 @@
 const mongoose = require('mongoose')
 
-mongoose.connect(process.env.MONGODB_URL)
-
+mongoose.connect("mongodb://127.0.0.1:27017/discuss_now").then(() => {
+    console.log("connection established")
+}).catch(() => {
+    console.log("there is an error")
+})
